@@ -1,12 +1,13 @@
 apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
-  name: main-service
-  description: this is a main service i want to set up
-  tags:
-    - go
-    - website
+  name: backstage-app
+  description: An example of a Backstage application.
+  # Example for optional annotations
+  # annotations:
+  #   github.com/project-slug: backstage/backstage
+  #   backstage.io/techdocs-ref: dir:.
 spec:
-  type: service
-  lifecycle: production
-  owner: team-2
+  type: website
+  owner: john@example.com
+  lifecycle: experimental

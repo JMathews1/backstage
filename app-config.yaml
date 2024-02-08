@@ -77,4 +77,16 @@ catalog:
     entityFilename: catalog-info.yaml
     pullRequestBranchName: backstage-integration
   rules:
-    - allow: [Component, System, API, Resource, Location]
+    - allow: [Component, System, API, Resource, Location, Template]
+  locations:
+    - type: file
+      target: ../../../Documents/test-docs-template/template.yaml
+    - type: url
+      target: https://github.com/backstage/software-templates/blob/main/scaffolder-templates/react-ssr-template/template.yaml
+      rules: 
+        - allow: [Template]
+    - type: url
+      target: https://github.com/JMathews1/aksdeploy/blob/8ce9d99655da836f46611ce23422e5ce415b8257/template.yaml
+      rules:
+        - allow: [Template]
+    
