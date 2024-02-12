@@ -3,7 +3,7 @@ import { createRouter } from '@backstage/plugin-scaffolder-backend';
 import { Router } from 'express';
 import type { PluginEnvironment } from '../types';
 import { createDeployAksClusterAction } from './scaffolder/actions/custom';
-
+import {createDeployDevEnvAction} from './scaffolder/actions/dev';
 
 export default async function createPlugin(
   env: PluginEnvironment,
@@ -12,7 +12,7 @@ export default async function createPlugin(
     discoveryApi: env.discovery,
   });
 
-  const actions = [createDeployAksClusterAction()];
+  const actions = [createDeployAksClusterAction(), createDeployDevEnvAction()];
 
   return await createRouter({
     actions,
