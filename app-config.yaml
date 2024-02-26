@@ -1,9 +1,25 @@
 app:
-  title: Rockit Engine
+  title: Backstage demo
   baseUrl: http://localhost:3000
 
+
+
+  support:
+    url: https://github.com/backstage/backstage/issues # Used by common ErrorPage
+    items: # Used by common SupportButton component
+      - title: Issues
+        icon: github
+        links:
+          - url: https://github.com/backstage/backstage/issues
+            title: GitHub Issues
+      - title: Discord Chatroom
+        icon: chat
+        links:
+          - url: https://discord.gg/backstage-687207715902193673
+            title: '#backstage'
+
 organization:
-  name: Rockit Rockets
+  name: Backstage demo
 
 backend:
   # Used for enabling authentication, secret is shared by all backend plugins
@@ -87,6 +103,14 @@ catalog:
         - allow: [Template]
     - type: url
       target: https://github.com/JMathews1/aksdeploy/blob/8ce9d99655da836f46611ce23422e5ce415b8257/template.yaml
+      rules:
+        - allow: [Template]
+    - type: url
+      target: https://github.com/JMathews1/dev_environment/blob/bf8dcb4e6f69696e8c08801a3292905b63594fef/template.yaml
+      rules:
+        - allow: [Template]
+    - type: file
+      target: /packages/backend/src/plugins/scaffolder/actions/custom.yaml
       rules:
         - allow: [Template]
     

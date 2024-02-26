@@ -62,7 +62,7 @@ export const createDeployDevEnvAction = () => {
             kind: 'StorageV2',
         }
         
-        await storageClient.storageAccounts.createOrUpdate(rgName, 'yourStorageAccountName', storageAccountParams);
+        await storageClient.storageAccounts.beginCreateAndWait(rgName, 'sto44448', storageAccountParams);
         console.log('Storage account created successfully');
 
         // AKS Cluster Parameters

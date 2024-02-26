@@ -1,0 +1,90 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: aks-cluster
+  title: Node.js App on Azure AKS Cluster
+  description: Deploy a Node.js App on Azure AKS Cluster using Terraform
+spec:
+  owner: user:guest
+  type: service
+  parameters:
+    - title: Application and Repository Configuration
+      required:
+        - name
+        - repoUrl
+      properties:
+        name:
+          title: App Name
+          type: string
+          description: Unique name for your app
+          ui:autofocus: true
+        repoUrl:
+          title: Repository Location
+          type: string
+          ui:field: RepoUrlPicker
+          ui:options:
+            allowedHosts:
+              - github.com
+    - title: Basic AKS Cluster Configuration
+      required:
+        - clusterName
+        - region
+        - action
+      properties:
+        clusterName:
+          title: Cluster Name
+          type: string
+          description: The name of your AKS cluster
+        region:
+          title: Azure Region
+          type: string
+          description: The Azure region where the cluster will be deployed
+          enum:
+            - eastus
+            - westeurope
+        action:
+          title: Action
+          type: string
+          description: Action to perform (apply/destroy)
+          enum:
+            - apply
+            - destroy
+  steps:
+    - id: fetch-base
+      name: Fetch Base
+      action: fetch:template
+      input:
+        url: ./content
+        values:
+          name: ${{ parameters.name }}
+    - id: publish
+      name: Publish
+      action: publish:github
+      input:
+        allowedHosts: ['github.com']
+        description: This is ${{ parameters.name }}
+        repoUrl: ${{ parameters.repoUrl }}
+    - id: github-action
+      name: Trigger GitHub Action
+      action: github:actions:dispatch
+      input:
+        workflowId: manage-aks-cluster.yml
+        repoUrl: 'https://github.com/JMathews1/github_actions'
+        branchOrTagName: 'main'
+        workflowInputs:
+          clusterName: ${{ parameters.clusterName }}
+          azureRegion: ${{ parameters.region }}
+          action: ${{ parameters.action }}
+    - id: register
+      name: Register
+      action: catalog:register
+      input:
+        repoContentsUrl: ${{ steps['publish'].output.repoContentsUrl }}
+        catalogInfoPath: '/catalog-info.yaml'
+  output:
+    links:
+      - title: Repository
+        url: ${{ steps['publish'].output.remoteUrl }}
+      - title: Open in catalog
+        icon: catalog
+        entityRef: ${{ steps['register'].output.entityRef }}
